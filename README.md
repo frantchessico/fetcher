@@ -1,21 +1,21 @@
 
 
-# Fetcher
+# Kwatta
 
-Fetcher is a TypeScript library for simplifying HTTP requests using the `fetch` API. It provides straightforward methods for performing GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY requests, along with support for authentication, header control, caching, and event handling.
+Kwatta is a TypeScript library for simplifying HTTP requests using the `fetch` API. It provides straightforward methods for performing GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY requests, along with support for authentication, header control, caching, and event handling.
 
 ## Installation
 
-To install Fetcher, you can use npm or yarn:
+To install kwatta, you can use npm or yarn:
 
 ```bash
-npm install fetcher
+npm install kwatta
 ```
 
 or
 
 ```bash
-yarn add fetcher
+yarn add kwatta
 ```
 
 ## Usage
@@ -23,34 +23,34 @@ yarn add fetcher
 ### Import
 
 ```typescript
-import { Fetcher, RequestError, RequestEvent, EventHandler } from 'fetcher';
+import { Kwatta, RequestError, RequestEvent, EventHandler } from 'kwatta';
 ```
 
 ### Configuration
 
-To start using Fetcher, create an instance by passing the base URL for all your requests:
+To start using kwatta, create an instance by passing the base URL for all your requests:
 
 ```typescript
-const fetcher = new Fetcher('https://api.example.com');
+const kwatta = new Kwatta('https://api.example.com');
 ```
 
 ### Making Requests
 
-Fetcher provides methods for different types of requests:
+kwatta provides methods for different types of requests:
 
 ```typescript
 // GET
-const data = await fetcher.get<MyData>('/data');
+const data = await kwatta.get<MyData>('/data');
 
 // POST
 const newData = { name: 'John', age: 30 };
-const createdData = await fetcher.post<MyData>('/data', newData);
+const createdData = await kwatta.post<MyData>('/data', newData);
 
 // PUT
-const updatedData = await fetcher.put<MyData>('/data/123', newData);
+const updatedData = await kwatta.put<MyData>('/data/123', newData);
 
 // DELETE
-const deletedData = await fetcher.delete<MyData>('/data/123');
+const deletedData = await kwatta.delete<MyData>('/data/123');
 ```
 
 ### Authentication
@@ -58,7 +58,7 @@ const deletedData = await fetcher.delete<MyData>('/data/123');
 You can configure an authentication token to be included in the request headers:
 
 ```typescript
-fetcher.setAuthToken('your_token_here');
+kwatta.setAuthToken('your_token_here');
 ```
 
 ### Event Handling
@@ -74,8 +74,8 @@ const errorHandler: EventHandler<RequestError> = (event) => {
   console.error('Request failed:', event.payload.message);
 };
 
-fetcher.addEventHandler(successHandler);
-fetcher.addEventHandler(errorHandler);
+kwatta.addEventHandler(successHandler);
+kwatta.addEventHandler(errorHandler);
 ```
 
 ### Additional Features
@@ -89,15 +89,15 @@ const customHeaders = {
   'Custom-Header': 'value'
 };
 
-const dataWithHeaders = await fetcher.get<MyData>('/data', customHeaders);
+const dataWithHeaders = await kwatta.get<MyData>('/data', customHeaders);
 ```
 
 #### Caching
 
-Fetcher supports caching responses to reduce unnecessary network requests:
+kwatta supports caching responses to reduce unnecessary network requests:
 
 ```typescript
-fetcher.setCacheEnabled(true);
+kwatta.setCacheEnabled(true);
 ```
 
 #### Rate Limiting
@@ -105,7 +105,7 @@ fetcher.setCacheEnabled(true);
 You can set a delay between requests to prevent hitting rate limits:
 
 ```typescript
-fetcher.setRateLimitDelay(1000); // 1000ms delay between requests
+kwatta.setRateLimitDelay(1000); // 1000ms delay between requests
 ```
 
 #### Timeout
@@ -114,7 +114,7 @@ Set a timeout for requests to handle slow responses:
 
 ```typescript
 const timeout = 5000; // 5 seconds
-const responseData = await fetcher.get<MyData>('/data', undefined, timeout);
+const responseData = await kwatta.get<MyData>('/data', undefined, timeout);
 ```
 
 ## Contribution

@@ -17,8 +17,8 @@ interface RequestError extends Error {
     token: string;
   }
   
-  // Definição da classe Fetcher
-  declare class Fetcher<T extends AuthToken = AuthToken> {
+  // Definição da classe Kwatta
+  declare class Kwatta<T extends AuthToken = AuthToken> {
     private baseURL: string;
     private readonly DEFAULT_HEADERS: Record<string, string>;
     private readonly cache: Record<string, any>;
@@ -74,6 +74,6 @@ interface RequestError extends Error {
     private notifyEvent<T>(type: string, payload: T): void;
   }
   
-  // Exportação da instância padrão da Fetcher
-  export const instance1: Fetcher;
+  // Exportação da instância padrão da Kwatta
+  export const instance1: Kwatta;
   

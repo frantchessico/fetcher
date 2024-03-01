@@ -19,7 +19,7 @@ interface AuthToken {
   token: string;
 }
 
-export class Fetcher<T extends AuthToken = AuthToken> {
+export class Kwatta<T extends AuthToken = AuthToken> {
   private baseURL: string = '';
   private readonly DEFAULT_HEADERS: Record<string, string> = {
     'Content-Type': 'application/json',

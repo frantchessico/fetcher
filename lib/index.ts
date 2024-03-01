@@ -1,5 +1,3 @@
-import fetch, { RequestInit, Headers } from 'node-fetch';
-
 /**
  * Interface for defining the request error format.
  */

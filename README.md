@@ -1,129 +1,146 @@
 
 
-# Kwatta
+# Kwatta Library Documentation
 
-Kwatta is a TypeScript library for simplifying HTTP requests using the `fetch` API. It provides straightforward methods for performing GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY requests, along with support for authentication, header control, caching, and event handling.
+The Kwatta library is a tool to facilitate HTTP requests in JavaScript applications. With it, you can perform GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY requests in a simple and efficient way.
 
 ## Installation
 
-To install kwatta, you can use npm or yarn:
+To use the Kwatta library in your project, you can install it via npm:
 
 ```bash
 npm install kwatta
 ```
 
-or
+## Basic Usage
 
-```bash
-yarn add kwatta
-```
+To get started with the Kwatta library, follow the steps below:
 
-## Usage
-
-### Import
+1. Import the `Kwatta` class and necessary types:
 
 ```typescript
-import { Kwatta, RequestError, RequestEvent, EventHandler } from 'kwatta';
+import { Kwatta, Middleware, RequestError } from 'kwatta';
 ```
 
-### Configuration
-
-To start using kwatta, create an instance by passing the base URL for all your requests:
+2. Create an instance of the `Kwatta` class, specifying the base URL of your API:
 
 ```typescript
-const kwatta = new Kwatta('https://api.example.com');
+const kwatta = new Kwatta('https://your-api.com');
 ```
 
-### Making Requests
-
-kwatta provides methods for different types of requests:
+3. Make HTTP requests using the available methods (GET, POST, PUT, etc.):
 
 ```typescript
-// GET
-const data = await kwatta.get<MyData>('/data');
-
-// POST
-const newData = { name: 'John', age: 30 };
-const createdData = await kwatta.post<MyData>('/data', newData);
-
-// PUT
-const updatedData = await kwatta.put<MyData>('/data/123', newData);
-
-// DELETE
-const deletedData = await kwatta.delete<MyData>('/data/123');
+kwatta.get('/users')
+    .then(users => {
+        console.log('List of users:', users);
+    })
+    .catch((error: RequestError) => {
+        console.error('Error fetching users:', error.message);
+    });
 ```
 
-### Authentication
+## Authentication Configuration
 
-You can configure an authentication token to be included in the request headers:
+You can configure an authentication token to be sent with all requests:
 
 ```typescript
-kwatta.setAuthToken('your_token_here');
+kwatta.setAuthToken('your-token');
 ```
 
-### Event Handling
-
-You can add event handlers to deal with specific events like success or error:
+You can also specify the name of the authentication header and whether to include the "Bearer" prefix:
 
 ```typescript
-const successHandler: EventHandler<MyData> = (event) => {
-  console.log('Request succeeded:', event.payload);
+kwatta.setAuthToken('your-token', 'Authorization', true);
+```
+
+## Middlewares
+
+Middlewares allow you to modify or intercept requests before they are sent. You can add as many middlewares as you like:
+
+```typescript
+const loggingMiddleware: Middleware = (options) => {
+    console.log(`Request: ${options.method} ${options.url}`);
+    return options;
 };
 
-const errorHandler: EventHandler<RequestError> = (event) => {
-  console.error('Request failed:', event.payload.message);
+kwatta.use(loggingMiddleware);
+```
+
+## Request Cache
+
+The Kwatta library supports response caching to reduce the number of repeated requests to the server. You can configure the cache lifetime in milliseconds:
+
+```typescript
+kwatta.setCacheLifetime(60000); // Cache valid for 1 minute
+```
+
+## Event Handling
+
+You can add event handlers to be notified about the success or failure of requests:
+
+```typescript
+const successHandler = (event: RequestEvent<any>) => {
+    console.log('Request successful:', event.payload);
+};
+
+const errorHandler = (event: RequestEvent<RequestError>) => {
+    console.error('Request error:', event.payload.message);
 };
 
 kwatta.addEventHandler(successHandler);
 kwatta.addEventHandler(errorHandler);
 ```
 
-### Additional Features
+## Clearing Cache
 
-#### Custom Headers
-
-You can define custom headers to include in your requests:
+You can manually clear the response cache:
 
 ```typescript
-const customHeaders = {
-  'Custom-Header': 'value'
+kwatta.clearCache();
+```
+
+## Removing Event Handlers
+
+To remove an event handler, use the `removeEventHandler` method:
+
+```typescript
+kwatta.removeEventHandler(successHandler);
+```
+
+## Example Usage
+
+Here's a more complete example of usage:
+
+```typescript
+import { Kwatta, Middleware } from 'kwatta';
+
+const kwatta = new Kwatta('https://your-api.com');
+
+const addCustomHeaderMiddleware: Middleware = (options) => {
+    const customHeaders = {
+        ...options.headers,
+        'X-Custom-Header': 'Custom Header Value'
+    };
+    return { ...options, headers: customHeaders };
 };
 
-const dataWithHeaders = await kwatta.get<MyData>('/data', customHeaders);
+const loggingMiddleware: Middleware = (options) => {
+    console.log(`Request: ${options.method} ${options.url}`);
+    return options;
+};
+
+kwatta.use(addCustomHeaderMiddleware).use(loggingMiddleware);
+
+kwatta.get('/users')
+    .then(users => {
+        console.log('List of users:', users);
+    })
+    .catch((error: RequestError) => {
+        console.error('Error fetching users:', error.message);
+    });
 ```
-
-#### Caching
-
-kwatta supports caching responses to reduce unnecessary network requests:
-
-```typescript
-kwatta.setCacheEnabled(true);
-```
-
-#### Rate Limiting
-
-You can set a delay between requests to prevent hitting rate limits:
-
-```typescript
-kwatta.setRateLimitDelay(1000); // 1000ms delay between requests
-```
-
-#### Timeout
-
-Set a timeout for requests to handle slow responses:
-
-```typescript
-const timeout = 5000; // 5 seconds
-const responseData = await kwatta.get<MyData>('/data', undefined, timeout);
-```
-
-## Contribution
-
-Contributions are welcome! Feel free to open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
 
 ---
-This README provides a more comprehensive overview of your library's functionality, including additional features, configuration options, and examples. You can further expand it with usage examples, advanced configurations, error handling details, and more, based on your library's specific requirements and use cases.
+
+### By Francisco Inoque

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",               /* Especifica a pasta de saída para todos os arquivos compilados. */
+    "rootDir": "./lib",               /* Especifica a pasta raiz que contém os arquivos de origem TypeScript. */
+    
+    "target": "es2016",               /* Define a versão do ECMAScript para a qual o código será compilado. */
+    "module": "commonjs",             /* Especifica o formato do módulo para o código gerado. */
+
+    "esModuleInterop": true,          /* Facilita a importação de módulos CommonJS em módulos ES6. */
+    "forceConsistentCasingInFileNames": true, /* Garante consistência na capitalização dos nomes de arquivo. */
+    
+    "strict": true,                   /* Habilita todas as opções de verificação estrita de tipo. */
+
+    "skipLibCheck": true              /* Pula a verificação de tipos de todos os arquivos .d.ts. */
+  }
+}

@@ -222,51 +222,6 @@ export class Kwatta<T extends AuthToken = AuthToken> {
   }
 
   /**
-   * Executes an HTTP CONNECT request.
-   * @param path The request path.
-   * @param headers Optional request headers.
-   * @param timeout Optional request timeout in milliseconds.
-   * @returns A promise that resolves with the response data.
-   */
-  async connect<T>(
-    path: string,
-    headers?: Record<string, string>,
-    timeout?: number
-  ): Promise<T> {
-    return this.performRequest<T>('CONNECT', path, headers, undefined, timeout);
-  }
-
-  /**
-   * Executes an HTTP TRACE request.
-   * @param path The request path.
-   * @param headers Optional request headers.
-   * @param timeout Optional request timeout in milliseconds.
-   * @returns A promise that resolves with the response data.
-   */
-  async trace<T>(
-    path: string,
-    headers?: Record<string, string>,
-    timeout?: number
-  ): Promise<T> {
-    return this.performRequest<T>('TRACE', path, headers, undefined, timeout);
-  }
-
-  /**
-   * Executes an HTTP COPY request.
-   * @param path The request path.
-   * @param headers Optional request headers.
-   * @param timeout Optional request timeout in milliseconds.
-   * @returns A promise that resolves with the response data.
-   */
-  async copy<T>(
-    path: string,
-    headers?: Record<string, string>,
-    timeout?: number
-  ): Promise<T> {
-    return this.performRequest<T>('COPY', path, headers, undefined, timeout);
-  }
-
-  /**
    * Applies middlewares to the options object.
    * @param options The request options object.
    * @returns A promise that resolves with the modified options.
@@ -322,7 +277,7 @@ export class Kwatta<T extends AuthToken = AuthToken> {
         method,
         headers: this.buildHeaders(headers),
         signal,
-        body: body instanceof FormData ? body : JSON.stringify(body),
+        body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined,
       };
 
       options = await this.applyMiddlewares(options);
@@ -475,3 +430,4 @@ export class Kwatta<T extends AuthToken = AuthToken> {
     console.log(`[ABORTED] ${method.toUpperCase()} request to ${url} was aborted`);
   }
 }
+

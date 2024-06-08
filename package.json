@@ -1,5 +1,8 @@
 {
   "name": "kwatta",
+  "repository": {
+    "url": "https://github.com/frantchessico/kwatta"
+  },
   "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
@@ -18,5 +21,6 @@
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
-  }
+  },
+  "homepage": "https://github.com/frantchessico/kwatta"
 }

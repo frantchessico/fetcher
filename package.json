@@ -3,7 +3,7 @@
   "repository": {
     "url": "https://github.com/frantchessico/kwatta"
   },
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

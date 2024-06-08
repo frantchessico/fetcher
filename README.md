@@ -1,12 +1,12 @@
-
+Here's the documentation for the Kwatta Library:
 
 # Kwatta Library Documentation
 
-The Kwatta library is a tool to facilitate HTTP requests in JavaScript applications. With it, you can perform GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY requests in a simple and efficient way.
+The Kwatta library is a tool designed to simplify HTTP requests in JavaScript applications. It provides support for common HTTP methods such as GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE, and COPY, making it easier to interact with web servers.
 
 ## Installation
 
-To use the Kwatta library in your project, you can install it via npm:
+You can install the Kwatta library via npm:
 
 ```bash
 npm install kwatta
@@ -14,7 +14,7 @@ npm install kwatta
 
 ## Basic Usage
 
-To get started with the Kwatta library, follow the steps below:
+To begin using the Kwatta library, follow these steps:
 
 1. Import the `Kwatta` class and necessary types:
 
@@ -25,13 +25,13 @@ import { Kwatta, Middleware, RequestError } from 'kwatta';
 2. Create an instance of the `Kwatta` class, specifying the base URL of your API:
 
 ```typescript
-const kwatta = new Kwatta('https://your-api.com');
+const k = new Kwatta('https://your-api.com');
 ```
 
-3. Make HTTP requests using the available methods (GET, POST, PUT, etc.):
+3. Make HTTP requests using the available methods:
 
 ```typescript
-kwatta.get('/users')
+k.get('/users')
     .then(users => {
         console.log('List of users:', users);
     })
@@ -40,18 +40,61 @@ kwatta.get('/users')
     });
 ```
 
+
+```typescript
+k.post('/users', { name: 'John Doe', age: 30 })
+    .then(response => {
+        console.log('User added successfully:', response);
+    })
+    .catch((error: RequestError) => {
+        console.error('Error adding user:', error.message);
+    });
+```
+
+```typescript
+k.put('/users/1', { name: 'Jane Doe', age: 25 })
+    .then(response => {
+        console.log('User updated successfully:', response);
+    })
+    .catch((error: RequestError) => {
+        console.error('Error updating user:', error.message);
+    });
+```
+
+```typescript
+k.patch('/users/1', { age: 26 })
+    .then(response => {
+        console.log('User updated successfully:', response);
+    })
+    .catch((error: RequestError) => {
+        console.error('Error updating user:', error.message);
+    });
+```
+
+```typescript
+k.delete('/users/1')
+    .then(() => {
+        console.log('User deleted successfully');
+    })
+    .catch((error: RequestError) => {
+        console.error('Error deleting user:', error.message);
+    });
+```
+
+
+
 ## Authentication Configuration
 
 You can configure an authentication token to be sent with all requests:
 
 ```typescript
-kwatta.setAuthToken('your-token');
+k.setAuthToken('your-token');
 ```
 
 You can also specify the name of the authentication header and whether to include the "Bearer" prefix:
 
 ```typescript
-kwatta.setAuthToken('your-token', 'Authorization', true);
+k.setAuthToken('your-token', 'Authorization', true);
 ```
 
 ## Middlewares
@@ -59,12 +102,12 @@ kwatta.setAuthToken('your-token', 'Authorization', true);
 Middlewares allow you to modify or intercept requests before they are sent. You can add as many middlewares as you like:
 
 ```typescript
-const loggingMiddleware: Middleware = (options) => {
+const logMiddleware: Middleware = (options) => {
     console.log(`Request: ${options.method} ${options.url}`);
     return options;
 };
 
-kwatta.use(loggingMiddleware);
+k.use(logMiddleware);
 ```
 
 ## Request Cache
@@ -72,7 +115,7 @@ kwatta.use(loggingMiddleware);
 The Kwatta library supports response caching to reduce the number of repeated requests to the server. You can configure the cache lifetime in milliseconds:
 
 ```typescript
-kwatta.setCacheLifetime(60000); // Cache valid for 1 minute
+k.setCacheLifetime(60000); // Cache valid for 1 minute
 ```
 
 ## Event Handling
@@ -88,8 +131,8 @@ const errorHandler = (event: RequestEvent<RequestError>) => {
     console.error('Request error:', event.payload.message);
 };
 
-kwatta.addEventHandler(successHandler);
-kwatta.addEventHandler(errorHandler);
+k.addEventHandler(successHandler);
+k.addEventHandler(errorHandler);
 ```
 
 ## Clearing Cache
@@ -97,7 +140,7 @@ kwatta.addEventHandler(errorHandler);
 You can manually clear the response cache:
 
 ```typescript
-kwatta.clearCache();
+k.clearCache();
 ```
 
 ## Removing Event Handlers
@@ -105,7 +148,7 @@ kwatta.clearCache();
 To remove an event handler, use the `removeEventHandler` method:
 
 ```typescript
-kwatta.removeEventHandler(successHandler);
+k.removeEventHandler(successHandler);
 ```
 
 ## Example Usage
@@ -115,7 +158,7 @@ Here's a more complete example of usage:
 ```typescript
 import { Kwatta, Middleware } from 'kwatta';
 
-const kwatta = new Kwatta('https://your-api.com');
+const k = new Kwatta('https://your-api.com');
 
 const addCustomHeaderMiddleware: Middleware = (options) => {
     const customHeaders = {
@@ -125,14 +168,14 @@ const addCustomHeaderMiddleware: Middleware = (options) => {
     return { ...options, headers: customHeaders };
 };
 
-const loggingMiddleware: Middleware = (options) => {
+const logMiddleware: Middleware = (options) => {
     console.log(`Request: ${options.method} ${options.url}`);
     return options;
 };
 
-kwatta.use(addCustomHeaderMiddleware).use(loggingMiddleware);
+k.use(addCustomHeaderMiddleware).use(logMiddleware);
 
-kwatta.get('/users')
+k.get('/users')
     .then(users => {
         console.log('List of users:', users);
     })
